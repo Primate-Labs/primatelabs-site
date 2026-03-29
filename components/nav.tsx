@@ -17,7 +17,7 @@ export default function Nav() {
     <header className="sticky top-0 z-50 border-b border-[#1a1a1a] bg-[#0a0a0a]/90 backdrop-blur-sm">
       <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-7 h-7 relative flex-shrink-0">
+          <div className="w-7 h-7 relative flex-shrink-0 rounded-full overflow-hidden">
             <Image
               src="/logo.png"
               alt="Primate Labs"
