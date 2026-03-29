@@ -1,0 +1,68 @@
+---
+title: "3D Printing Functional Hardware: What I've Learned After 200+ Hours"
+description: "The gap between 3D printing as a hobby and 3D printing as an engineering tool is mostly about tolerances, material selection, and a willingness to throw away your first ten prints."
+date: "2024-11-28"
+tags: ["Hardware", "Engineering"]
+---
+
+I started 3D printing to make replacement parts. I've ended up using it to prototype mechanical components, enclosures, and tooling fixtures for software-driven hardware projects.
+
+Here's what I wish someone had told me at the start.
+
+## Think in Tolerances, Not Dimensions
+
+The most common beginner mistake is modeling parts to exact dimensions and expecting them to fit together perfectly. Filament-based printing doesn't work that way.
+
+A 10mm hole modeled at 10mm will measure 9.6mm after printing. A 10mm peg modeled at 10mm won't fit in it.
+
+Start every project by printing a calibration piece for your specific filament-printer combination. Establish your shrinkage factor. Then build it into your CAD workflow, not as an afterthought, but as a first-class constraint.
+
+For clearance fits (things that need to slide), I typically add 0.2mm clearance per mating surface. For press fits, 0.05mm interference. For snap fits, you'll just have to iterate — there's no substitute for prints.
+
+## Material Selection Is an Engineering Decision
+
+PLA is fine for prototyping. It's not fine for most functional applications:
+- Not great above 60°C
+- Brittle under cyclic loading
+- Absorbs moisture and weakens over time
+
+For anything that will see real use, consider:
+- **PETG**: Better temperature resistance, more flexible than PLA, easier than ABS. My default for functional parts.
+- **ASA**: Good UV resistance, reasonable mechanical properties. Use it for outdoor hardware.
+- **PA (Nylon)**: Excellent mechanical properties, great for anything that needs real toughness. Moisture control during printing is critical.
+- **PC**: High temperature and impact resistance. Difficult to print well, but sometimes the right answer.
+
+The material selection conversation should happen at the design stage, not after you've already modeled the part.
+
+## Anisotropy Is Real
+
+Printed parts are not isotropic. The layer orientation has a massive effect on strength. A part might be rock solid under compression but fail immediately under tension applied perpendicular to the layers.
+
+When designing functional parts, think about the primary load path and orient your print so the layers are perpendicular to the tensile stress direction. This often means printing parts in a less obvious orientation, sometimes with more supports.
+
+For critical structural applications, add features to your design that mechanically interlock layers — ribs, gussets, interlocking geometry. Don't just rely on layer adhesion.
+
+## Wall Thickness and Infill Are Not Decorative
+
+Slicer settings matter. A lot.
+
+For functional parts:
+- **Perimeters/shells**: More walls = more isotropic strength. I rarely go below 4 perimeters for structural parts.
+- **Infill pattern**: Gyroid and honeycomb patterns distribute stress more evenly than rectilinear. Use them for anything that will see varied loading.
+- **Infill percentage**: 40-60% for most structural parts. 100% infill is slower and doesn't always give you proportionally better properties.
+
+These settings aren't just about the final product — they affect how you design the part. A design that relies on high infill density to work is a design that needs more thought.
+
+## The Iteration Process
+
+Print → test → fail → understand why → redesign → repeat.
+
+That's the process. Trying to avoid iteration by designing the perfect part on the first try is slower, not faster. Design for rapid iteration: small parts, quick print times, clear failure modes.
+
+Document what you try. I keep a simple log for each project: print settings, material batch, what failed, what changed. It sounds tedious. Six weeks later you'll thank yourself.
+
+---
+
+The parts that have worked best in my projects are never the ones I designed once and printed once. They're the ones I printed eight times and understood deeply by the third failure.
+
+That's the process.

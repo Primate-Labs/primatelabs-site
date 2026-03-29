@@ -1,0 +1,72 @@
+---
+title: "On Building Systems That Think"
+description: "A practical look at what it actually takes to build AI-powered systems that work reliably in production — and why most tutorials miss the hard parts."
+date: "2025-01-14"
+tags: ["AI", "Systems", "Engineering"]
+---
+
+Everyone is building with AI. Most of what gets shipped is fragile.
+
+Not because the models are bad — they're genuinely impressive. But because integrating a probabilistic system into deterministic infrastructure is a fundamentally different engineering discipline, and most teams are treating it like it's just another API call.
+
+It's not.
+
+## The Gap Between Demo and Production
+
+A language model demo is easy. You write a prompt, stream a response, it looks magical. Thirty minutes of work.
+
+A production AI feature is something else entirely. You need to think about:
+
+- **Reliability**: What happens when the model returns unexpected output? What's your fallback?
+- **Latency**: P99 latency for LLM calls can be an order of magnitude higher than P50. How does your product handle this?
+- **Cost**: Token costs at scale are real. Your prompt engineering decisions are infrastructure decisions.
+- **Evaluation**: How do you know when you've made things worse? You can't unit test a vibes.
+
+These aren't AI problems — they're software engineering problems with an AI component.
+
+## Treat the Model Like a Flaky Dependency
+
+The mental model that's helped me most: treat your LLM like an external API that's unreliable, slow, and expensive. Because it is.
+
+This changes how you design the system. You add retries with exponential backoff. You cache aggressively where possible. You build circuit breakers. You write output validators, not just output parsers.
+
+Most importantly: you design for graceful degradation. What does your product do when the AI layer is down? If the answer is "nothing works," you've got a problem.
+
+## Structured Outputs Are the Foundation
+
+Raw text from models is hard to work with. Structured outputs — JSON schemas enforced at the API level — change everything.
+
+When you constrain the output format, you get:
+- Predictable parsing
+- Easier validation
+- Cleaner error surfaces
+- Better evals
+
+This is not about distrust of the model. It's about system design. You wouldn't accept arbitrary string output from a database — same principle applies here.
+
+## Evals Are Your Test Suite
+
+You can't ship responsibly without evaluation infrastructure. This doesn't need to be sophisticated. Start with:
+
+1. A golden dataset of inputs and expected outputs
+2. A scoring function (even a simple string match is fine to start)
+3. A way to run this before deploying prompt changes
+
+The goal is to catch regressions. Prompt engineering is code. Treat it that way.
+
+## The Unsexy Work
+
+Most teams want to talk about which model they're using. Almost nobody wants to talk about:
+
+- How they're managing prompt versions
+- What their fallback logic looks like
+- How they're measuring quality over time
+- What happens when context windows overflow
+
+This is where the real engineering happens. The model is just one piece of the system.
+
+Build the boring parts well. That's where production AI lives.
+
+---
+
+Building something in this space? I'd genuinely like to hear about the hard parts you've run into. The interesting problems are always in the details.
